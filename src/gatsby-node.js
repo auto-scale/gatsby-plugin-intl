@@ -28,7 +28,6 @@ exports.onCreateWebpackConfig = ({ actions, plugins }, pluginOptions) => {
       }),
       new webpack.ContextReplacementPlugin(
         /@formatjs[/\\]intl-relativetimeformat[/\\]dist[/\\]locale-data$/,
-        regex
         regex,
       ),
       new webpack.ContextReplacementPlugin(
