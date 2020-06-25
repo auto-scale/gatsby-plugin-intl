@@ -29,10 +29,11 @@ exports.onCreateWebpackConfig = ({ actions, plugins }, pluginOptions) => {
       new webpack.ContextReplacementPlugin(
         /@formatjs[/\\]intl-relativetimeformat[/\\]dist[/\\]locale-data$/,
         regex
+        regex,
       ),
       new webpack.ContextReplacementPlugin(
         /@formatjs[/\\]intl-pluralrules[/\\]dist[/\\]locale-data$/,
-        regex
+        regex,
       ),
     ],
   })
@@ -49,7 +50,7 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
     languages = ["en"],
     defaultLanguage = "en",
     redirect = false,
-    ignoreRedirectUrls = [''],
+    ignoreRedirectUrls = [],
   } = pluginOptions
 
   const getMessages = (path, language) => {
@@ -62,16 +63,15 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
       if (error.code === "MODULE_NOT_FOUND") {
         process.env.NODE_ENV !== "test" &&
         console.error(
-          `[gatsby-plugin-intl] couldn't find file "${path}/${language}.json"`
+          `[gatsby-plugin-intl] couldn't find file "${path}/${language}.json"`,
         )
       }
 
       throw error
     }
   }
-
   const generatePage = (routed, language) => {
-    const canRedirect = !ignoreRedirectUrls.some(url => new RegExp(`^${url}`).test(page.path))
+    const canRedirect = ignoreRedirectUrls.length > 0 ? !ignoreRedirectUrls.some(url => new RegExp(`^${url}`).test(page.path)) : true
     const messages = getMessages(path, language)
     const newPath = routed ? `/${language}${page.path}` : page.path
     return {
