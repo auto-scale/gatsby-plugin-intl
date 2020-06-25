@@ -71,7 +71,7 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
   }
 
   const generatePage = (routed, language) => {
-    const isRedirect = ignoreRedirectUrls.every(url => !new RegExp(`^${url}`).test(page.path))
+    const isRedirect = !ignoreRedirectUrls.some(url => new RegExp(`^${url}`).test(page.path))
     const messages = getMessages(path, language)
     const newPath = routed ? `/${language}${page.path}` : page.path
     return {
